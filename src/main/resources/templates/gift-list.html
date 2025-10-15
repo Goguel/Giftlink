@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>GiftLink - Lista de Presentes</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        h1, h2 { color: #333; }
+        form { margin-bottom: 2em; padding: 1em; border: 1px solid #ccc; border-radius: 5px; }
+        label { display: block; margin-bottom: 0.5em; }
+        input, textarea { width: 300px; padding: 0.5em; margin-bottom: 1em; }
+        button { padding: 0.7em 1.5em; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+    <h1>GiftLink</h1>
+    <h2>Adicionar Novo Presente</h2>
+
+    <form th:action="@{/gifts/add}" th:object="${newGift}" method="post">
+        <div>
+            <label for="name">Nome do Presente:</label>
+            <input type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div>
+            <label for="description">Descrição:</label>
+            <textarea id="description" th:field="*{description}"></textarea>
+        </div>
+        <div>
+            <label for="value">Valor:</label>
+            <input type="number" id="value" th:field="*{value}" step="0.01" min="0" required>
+        </div>
+        <button type="submit">Adicionar Presente</button>
+    </form>
+
+    <h2>Lista de Presentes Cadastrados</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="gift : ${gifts}">
+                <td th:text="${gift.name}">Liquidificador</td>
+                <td th:text="${gift.description}">Potente, 12 velocidades</td>
+                <td th:text="${'R$ ' + #numbers.formatDecimal(gift.value, 1, 'POINT', 2, 'COMMA')}">R$ 150,00</td>
+                <td th:text="${gift.gifted} ? 'Presenteado' : 'Disponível'">Disponível</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
