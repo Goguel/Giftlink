@@ -57,4 +57,12 @@ public class GiftService {
             throw new IllegalArgumentException("O valor do presente não pode ser nulo ou negativo.");
         }
     }
+
+    public Gift markAsGifted(Long id) {
+        Gift gift = giftRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Presente não encontrado"));
+
+        gift.setGifted(true);
+        return giftRepository.save(gift);
+    }
 }
